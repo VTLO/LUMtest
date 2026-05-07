@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: Build with Vite
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: v25.9.0
+        node-version: [18.x, 20.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -21,8 +21,13 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
 
     - name: Build
-      run: |
-        npm install
-        npx webpack
+      run: npm run build
+
+    - name: Lint
+      run: npm run lint
